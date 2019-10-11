@@ -12,9 +12,9 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener{
     private JButton cipherButton;
     private JButton encipherButton;
     private JTextPane wynik;
-    VigenereCipher vigenereCipher;
+    private VigenereCipher vigenereCipher;
 
-    public mainFrame() {
+    private mainFrame() {
         vigenereCipher = new VigenereCipher();
         setSize(320,450);
         setTitle("Szyfromachina");
@@ -79,7 +79,7 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener{
             }
 
         }catch (Exception exception){
-            System.out.println("Podaj dana");
+            messageFrame messageFrame = new messageFrame("Podaj potrzebne dane!");
         }
 
     }
