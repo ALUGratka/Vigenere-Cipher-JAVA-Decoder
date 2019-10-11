@@ -28,10 +28,6 @@ public class messageFrame extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        messageFrame messageFrame = new messageFrame("Podaj potrzebne dane");
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();

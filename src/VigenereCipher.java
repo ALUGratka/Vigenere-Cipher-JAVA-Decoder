@@ -25,11 +25,21 @@ public class VigenereCipher {
 
         signStart = 'A';
         signs = new ArrayList<>();
-        for(int i = 0;i<34;i++){
+        for(int i = 0;i<65;i++){
             signStart--;
             signs.add(signStart);
         }
 
+    }
+
+    public Character[][] getAlphabetTable(){
+        Character[][] alphabet = new Character[26][26];
+        for(int i = 0;i<26;i++){
+            for(int j = 0;j<26;j++){
+                alphabet[i][j] = alphabetTable[i][j];
+            }
+        }
+        return alphabet;
     }
 
     public void printAlhpabet(){
@@ -57,7 +67,7 @@ public class VigenereCipher {
         this.inputText = inputText.toUpperCase();
     }
 
-    private void setTextWitchPassword(){
+    private String setTextWitchPassword(){
         StringBuilder textWithPassword = new StringBuilder(inputText.toUpperCase());
         System.out.println(textWithPassword);
         int j = 0;
@@ -73,29 +83,19 @@ public class VigenereCipher {
             }
         }
 
-        this.textWitchPassword = textWithPassword.toString();
+        return textWithPassword.toString();
     }
 
     public String getTextWitchPassword(){
         return this.textWitchPassword;
     }
 
-    private boolean betwene(char a, char b, char c){
-        Character A = a;
-        Character B = b;
-        Character C = c;
-        if(A.compareTo(B)==0&&A.compareTo(C)==1) return true;
-        return false;
-    }
-
     private String formatTextIntoSentance(String text){
-        String newText = text.substring(0,1).toUpperCase()+text.substring(1).toLowerCase();
-        return newText;
+        return text.substring(0,1).toUpperCase()+text.substring(1).toLowerCase();
     }
 
     public String enctyption(){
-        textWitchPassword = new String();
-        setTextWitchPassword();
+        textWitchPassword = setTextWitchPassword();
 
         StringBuilder encryptedText = new StringBuilder(textWitchPassword);
         for(int i = 0;i<textWitchPassword.length();i++){
@@ -111,21 +111,38 @@ public class VigenereCipher {
     }
 
     public String decription(){
-        StringBuilder decriptedText = new StringBuilder(textWitchPassword);
-        System.out.println(decriptedText);
-        for(int i = 0;i<textWitchPassword.length();i++){
+        textWitchPassword = setTextWitchPassword();
+
+        StringBuilder decryptedText = new StringBuilder(textWitchPassword);
+
+        for (int i = 0, j = 0; i < inputText.length(); i++) {
+            char letter = inputText.charAt(i);
             if(signs.contains(textWitchPassword.charAt(i))){
                 char sign = inputText.charAt(i);
-                decriptedText.setCharAt(i,sign);
+                decryptedText.setCharAt(i,sign);
             }
             else{
-                decriptedText.setCharAt(i,alphabetTable[textWitchPassword.charAt(i)-65][0]);
+                decryptedText.setCharAt(i,(char)((letter - password.charAt(j) + 26) % 26 + 65));
+                j = ++j % password.length();
             }
         }
-        String edite;
-        return decriptedText.toString();
+        return formatTextIntoSentance(decryptedText.toString());
     }
 
+    private void encriptionAnimated(){
+
+        for(int i = 0;i<26;i++){
+            for(int j = 0;j<26;j++){
+                System.out.print(alphabetTable[i][j]);
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        VigenereCipher vc = new VigenereCipher();
+        vc.encriptionAnimated();
+    }
 
 }
 
