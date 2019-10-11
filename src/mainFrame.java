@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.undo.StateEditable;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -44,7 +45,7 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener, 
 
 
         haslo = new JTextField();
-        haslo.setToolTipText("podaj hasło");
+        haslo.setToolTipText("<html> <p style=\"font-size:7px;\">"+"podaj hasło"+"</p></html>");
         haslo.setBounds(40,12,264,20);
         haslo.setBorder(new MatteBorder(0, 0, 0, 0, Color.LIGHT_GRAY));
         haslo.setFont(new Font(Font.DIALOG,Font.BOLD,10));
@@ -118,16 +119,15 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener, 
             }
 
         }catch (Exception exception){
-            new messageFrame("Podaj potrzebne dane!");
+            new messageFrame("Podaj potrzebne dane!",getLocation().x+50,getLocation().y+100);
         }
-
     }
 
 
     @Override
     public void caretUpdate(CaretEvent e) {
         Object o = e.getSource();
-
+        setEnabled(true);
         if(o == haslo){
             vigenereCipher.setPassword(haslo.getText());
             System.out.println(haslo.getText());
