@@ -6,36 +6,35 @@ public class VigenereCipher {
     private String textWitchPassword;
     private char[][] alphabetTable;
     private ArrayList<Character>signs;
+    private String polishSigns = ("AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ");
 
     VigenereCipher(){
-        alphabetTable = new char[26][26];
         char signStart = 'A';
 
-        for(int i = 0;i<26;i++){
-            char sign = signStart;
-            for(int j = 0;j<26;j++){
-                if(sign>90) {
-                    sign='A';
-                }
-                alphabetTable[i][j] = sign;
-                sign++;
+        alphabetTable = new char[32][32];
+
+        for(int i = 0;i<32;i++){
+            for(int j = 0;j<32;j++){
+                alphabetTable[i][j] = polishSigns.charAt(j);
             }
-            signStart++;
+            char firsChar = polishSigns.charAt(0);
+            polishSigns = polishSigns.substring(1);
+            polishSigns=polishSigns+firsChar;
         }
 
-        signStart = 'A';
+        char signEnd = 'A';
         signs = new ArrayList<>();
         for(int i = 0;i<65;i++){
-            signStart--;
-            signs.add(signStart);
+            signEnd--;
+            signs.add(signEnd);
         }
 
     }
 
-    public Character[][] getAlphabetTable(){
-        Character[][] alphabet = new Character[26][26];
-        for(int i = 0;i<26;i++){
-            for(int j = 0;j<26;j++){
+    private Character[][] getAlphabetTable(){
+        Character[][] alphabet = new Character[32][32];
+        for(int i = 0;i<32;i++){
+            for(int j = 0;j<32;j++){
                 alphabet[i][j] = alphabetTable[i][j];
             }
         }
@@ -65,6 +64,7 @@ public class VigenereCipher {
 
     public void setInputText(String inputText) {
         this.inputText = inputText.toUpperCase();
+        textWitchPassword = setTextWitchPassword();
     }
 
     private String setTextWitchPassword(){
@@ -95,7 +95,7 @@ public class VigenereCipher {
     }
 
     public String enctyption(){
-        textWitchPassword = setTextWitchPassword();
+        //textWitchPassword = setTextWitchPassword();
 
         StringBuilder encryptedText = new StringBuilder(textWitchPassword);
         for(int i = 0;i<textWitchPassword.length();i++){
@@ -104,26 +104,28 @@ public class VigenereCipher {
                 encryptedText.setCharAt(i,sign);
             }
             else{
-                encryptedText.setCharAt(i,alphabetTable[(inputText.charAt(i)-65)][textWitchPassword.charAt(i)-65]);
+                int x = polishSigns.indexOf(inputText.charAt(i));
+                int y = polishSigns.indexOf(textWitchPassword.charAt(i));
+                encryptedText.setCharAt(i,alphabetTable[x][y]);
             }
         }
         return formatTextIntoSentance(encryptedText.toString());
     }
 
     public String decription(){
-        textWitchPassword = setTextWitchPassword();
+        //textWitchPassword = setTextWitchPassword();
 
         StringBuilder decryptedText = new StringBuilder(textWitchPassword);
 
         for (int i = 0, j = 0; i < inputText.length(); i++) {
-            char letter = inputText.charAt(i);
+            int letter = polishSigns.indexOf(inputText.charAt(i));
             if(signs.contains(textWitchPassword.charAt(i))){
                 char sign = inputText.charAt(i);
                 decryptedText.setCharAt(i,sign);
             }
             else{
-                decryptedText.setCharAt(i,(char)((letter - password.charAt(j) + 26) % 26 + 65));
-                j = ++j % password.length();
+                int x = polishSigns.indexOf(textWitchPassword.charAt(i));
+                decryptedText.setCharAt(i,alphabetTable[0][((letter - x + 32) % 32)]);
             }
         }
         return formatTextIntoSentance(decryptedText.toString());
@@ -131,8 +133,8 @@ public class VigenereCipher {
 
     private void encriptionAnimated(){
 
-        for(int i = 0;i<26;i++){
-            for(int j = 0;j<26;j++){
+        for(int i = 0;i<32;i++){
+            for(int j = 0;j<32;j++){
                 System.out.print(alphabetTable[i][j]);
             }
             System.out.println();

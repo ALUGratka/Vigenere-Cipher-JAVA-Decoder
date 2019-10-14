@@ -93,6 +93,7 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener, 
         cipherButton.addActionListener(this);
         encipherButton.addActionListener(this);
 
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -112,6 +113,7 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener, 
                 wynik.setText(vigenereCipher.enctyption());
                 cipherButton.setBackground(new Color(114,133,165));
                 encipherButton.setBackground(new Color(76,81,109));
+
             } else if (o == encipherButton) {
                 wynik.setText(vigenereCipher.decription());
                 encipherButton.setBackground(new Color(114,133,165));
