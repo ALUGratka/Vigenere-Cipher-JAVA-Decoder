@@ -1,4 +1,8 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 public class VigenereCipher {
     private String password;
@@ -19,7 +23,7 @@ public class VigenereCipher {
             }
             char firsChar = polishSigns.charAt(0);
             polishSigns = polishSigns.substring(1);
-            polishSigns=polishSigns+firsChar;
+            polishSigns+=firsChar;
         }
 
         char signEnd = 'A';
@@ -31,7 +35,7 @@ public class VigenereCipher {
 
     }
 
-    private Character[][] getAlphabetTable(){
+    Character[][] getAlphabetTable(){
         Character[][] alphabet = new Character[32][32];
         for(int i = 0;i<32;i++){
             for(int j = 0;j<32;j++){
@@ -42,19 +46,17 @@ public class VigenereCipher {
     }
 
     public void printAlhpabet(){
-        for(int i = 0;i<alphabetTable.length;i++){
-            for(int j = 0;j<alphabetTable.length;j++){
-                System.out.print(alphabetTable[i][j]);
-            }
+        for (char[] chars : alphabetTable) {
+            IntStream.range(0, alphabetTable.length).map(j -> chars[j]).forEachOrdered(System.out::print);
             System.out.println();
         }
     }
 
-    public String getPassword() {
+    private String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    void setPassword(String password) {
         this.password = password.toUpperCase().replaceAll("\\s+","");
     }
 
@@ -64,7 +66,6 @@ public class VigenereCipher {
 
     public void setInputText(String inputText) {
         this.inputText = inputText.toUpperCase();
-        textWitchPassword = setTextWitchPassword();
     }
 
     private String setTextWitchPassword(){
@@ -86,6 +87,15 @@ public class VigenereCipher {
         return textWithPassword.toString();
     }
 
+    public void readFromFile(String fileName) throws IOException {
+        final String[] password = {new String()};
+        setPassword(Files.lines(Paths.get(fileName)).findFirst().get());
+        Files.lines(Paths.get(fileName)).forEach(x-> password[0] +=(x+"\n"));
+        setInputText(password[0].substring(getPassword().length()+1));
+        System.out.println(getPassword());
+        System.out.println(getInputText());
+    }
+
     public String getTextWitchPassword(){
         return this.textWitchPassword;
     }
@@ -95,7 +105,7 @@ public class VigenereCipher {
     }
 
     public String enctyption(){
-        //textWitchPassword = setTextWitchPassword();
+        textWitchPassword = setTextWitchPassword();
 
         StringBuilder encryptedText = new StringBuilder(textWitchPassword);
         for(int i = 0;i<textWitchPassword.length();i++){
@@ -113,7 +123,7 @@ public class VigenereCipher {
     }
 
     public String decription(){
-        //textWitchPassword = setTextWitchPassword();
+        textWitchPassword = setTextWitchPassword();
 
         StringBuilder decryptedText = new StringBuilder(textWitchPassword);
 

@@ -2,15 +2,17 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
-import javax.swing.undo.StateEditable;
 import java.awt.*;
 import java.awt.event.*;
+import java.nio.file.NoSuchFileException;
 
 public class mainFrame extends JFrame implements ActionListener, CaretListener, MouseListener {
     private JLabel exit;
     private JPanel panel;
     private JLabel passwordText;
     private JTextField haslo;
+    private JButton passwordOKButton;
+    private  JButton enterDataFromFileButton;
     private JTextArea tekst;
     private JButton cipherButton;
     private JButton encipherButton;
@@ -46,10 +48,23 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener, 
 
         haslo = new JTextField();
         haslo.setToolTipText("<html> <p style=\"font-size:7px;\">"+"podaj hasło"+"</p></html>");
-        haslo.setBounds(40,12,264,20);
+        haslo.setBounds(40,12,100,20);
         haslo.setBorder(new MatteBorder(0, 0, 0, 0, Color.LIGHT_GRAY));
         haslo.setFont(new Font(Font.DIALOG,Font.BOLD,10));
         haslo.setForeground(new Color(76,81,109));
+
+        passwordOKButton = new JButton("OK");
+        passwordOKButton.setBounds(150,12,50,20);
+        passwordOKButton.setFont(new Font(Font.DIALOG,Font.BOLD,10));
+        passwordOKButton.setBackground(new Color(114,133,165));
+        passwordOKButton.setForeground(Color.LIGHT_GRAY);
+
+        enterDataFromFileButton = new JButton("WCZYTAJ");
+        enterDataFromFileButton.setBounds(210,12,85,20);
+        enterDataFromFileButton.setFont(new Font(Font.DIALOG,Font.BOLD,10));
+        enterDataFromFileButton.setBackground(new Color(114,133,165));
+        enterDataFromFileButton.setForeground(Color.LIGHT_GRAY);
+
 
         tekst = new JTextArea();
         tekst.setBounds(0,40,304,200);
@@ -80,6 +95,8 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener, 
 
 
         add(haslo);
+        add(passwordOKButton);
+        add(enterDataFromFileButton);
         add(tekst);
         add(cipherButton);
         add(encipherButton);
@@ -90,6 +107,8 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener, 
 
         haslo.addCaretListener(this);
         tekst.addCaretListener(this);
+        passwordOKButton.addActionListener(this);
+        enterDataFromFileButton.addActionListener(this);
         cipherButton.addActionListener(this);
         encipherButton.addActionListener(this);
 
@@ -109,18 +128,33 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener, 
         wynik.setText("");
         Object o = e.getSource();
         try {
-            if (o == cipherButton) {
+            if(o == passwordOKButton){
+                vigenereCipher.setPassword(haslo.getText());
+                System.out.println(haslo.getText());
+                haslo.setText("");
+            }
+            else if(o == enterDataFromFileButton){
+                vigenereCipher.readFromFile("data.txt");
+                haslo.setText("");
+                tekst.setText(vigenereCipher.getInputText());
+                tekst.setEditable(false);
+            }
+            else if (o == cipherButton) {
                 wynik.setText(vigenereCipher.enctyption());
                 cipherButton.setBackground(new Color(114,133,165));
                 encipherButton.setBackground(new Color(76,81,109));
+                tekst.setEditable(true);
 
             } else if (o == encipherButton) {
                 wynik.setText(vigenereCipher.decription());
                 encipherButton.setBackground(new Color(114,133,165));
                 cipherButton.setBackground(new Color(76,81,109));
+                tekst.setEditable(true);
             }
 
-        }catch (Exception exception){
+        } catch (NoSuchFileException e2){
+            new messageFrame("Nie ma takiego pliku.",getLocation().x+50,getLocation().y+100);
+        } catch (Exception exception){
             new messageFrame("Podaj potrzebne dane!",getLocation().x+50,getLocation().y+100);
         }
     }
@@ -130,11 +164,11 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener, 
     public void caretUpdate(CaretEvent e) {
         Object o = e.getSource();
         setEnabled(true);
-        if(o == haslo){
+       /* if(o == haslo){
             vigenereCipher.setPassword(haslo.getText());
             System.out.println(haslo.getText());
-        }
-        else if(o==tekst){
+        }*/
+        if(o==tekst){
             vigenereCipher.setInputText(tekst.getText());
             System.out.println(tekst.getText());
         }
