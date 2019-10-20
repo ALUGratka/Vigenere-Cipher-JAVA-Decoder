@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -103,13 +100,20 @@ public class VigenereCipher {
         System.out.println(getInputText());
     }
 
-    public void saveToFile() throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter("wynik.txt"));
-        writer.write("Wprowadzony tekst: \n");
-        writer.write(inputText);
-        writer.write("\nTekst szyfrowany: \n");
-        writer.write(enctyption());
-        writer.close();
+    public void saveToFile(String result) throws IOException {
+        File file = new File("wynik.txt");
+        String enc = enctyption();
+        if(inputText.isEmpty()||textWitchPassword.isEmpty()||result.isEmpty()){
+            file.delete();
+        }
+        else{
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file.getName()));
+            writer.write("Wprowadzony tekst: \n");
+            writer.write(inputText);
+            writer.write("\nTekst szyfrowany: \n");
+            writer.write(result);
+            writer.close();
+        }
     }
 
     public String getTextWitchPassword(){

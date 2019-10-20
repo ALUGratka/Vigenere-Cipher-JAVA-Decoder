@@ -24,9 +24,11 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener, 
     private JTextPane wynik;
     private VigenereCipher vigenereCipher;
     private PickAFile pickAFile;
+    private boolean encipherButtonClicked;
+    private boolean decipherButtonClicked;
 
 
-    private mainFrame() throws IOException {
+    mainFrame() throws IOException {
         vigenereCipher = new VigenereCipher();
         setSize(408,640);
         setTitle("Szyfromachina");
@@ -138,7 +140,6 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener, 
         add(panel);
 
 
-
         exit.addMouseListener(this);
 
         haslo.addCaretListener(this);
@@ -168,7 +169,6 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener, 
         try {
             if(o == passwordOKButton){
                 vigenereCipher.setPassword(haslo.getText());
-                System.out.println(haslo.getText());
                 haslo.setText("");
             }
             else if(o == enterDataFromFileButton){
@@ -178,12 +178,16 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener, 
                 //tekst.setEditable(false);
             }
             else if (o == cipherButton) {
+                encipherButtonClicked = true;
+                decipherButtonClicked = false;
                 wynik.setText(vigenereCipher.enctyption());
                 cipherButton.setBackground(new Color(114,133,165));
                 encipherButton.setBackground(new Color(76,81,109));
                 tekst.setEditable(true);
 
             } else if (o == encipherButton) {
+                decipherButtonClicked = true;
+                encipherButtonClicked = false;
                 wynik.setText(vigenereCipher.decription());
                 encipherButton.setBackground(new Color(114,133,165));
                 cipherButton.setBackground(new Color(76,81,109));
@@ -196,7 +200,15 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener, 
                 vigenereCipher.setPassword("");
             }
             else if(o == saveToFileButton){
-                vigenereCipher.saveToFile();
+                if(encipherButtonClicked==true){
+                    vigenereCipher.saveToFile(vigenereCipher.enctyption());
+                }
+                else if(decipherButtonClicked==true){
+                    vigenereCipher.saveToFile(vigenereCipher.decription());
+                }
+                else if(encipherButtonClicked==false||decipherButtonClicked==false){
+                    vigenereCipher.saveToFile(null);
+                }
             }
 
         } catch (NoSuchFileException e2){
@@ -211,13 +223,8 @@ public class mainFrame extends JFrame implements ActionListener, CaretListener, 
     public void caretUpdate(CaretEvent e) {
         Object o = e.getSource();
         setEnabled(true);
-       /* if(o == haslo){
-            vigenereCipher.setPassword(haslo.getText());
-            System.out.println(haslo.getText());
-        }*/
         if(o==tekst){
             vigenereCipher.setInputText(tekst.getText());
-            System.out.println(tekst.getText());
         }
     }
 
