@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,6 +14,10 @@ public class VigenereCipher {
     private char[][] alphabetTable;
     private ArrayList<Character>signs;
     private String polishSigns = ("AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ");
+
+    public ArrayList<Character> getSigns() {
+        return signs;
+    }
 
     VigenereCipher(){
         char signStart = 'A';
@@ -96,6 +103,15 @@ public class VigenereCipher {
         System.out.println(getInputText());
     }
 
+    public void saveToFile() throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter("wynik.txt"));
+        writer.write("Wprowadzony tekst: \n");
+        writer.write(inputText);
+        writer.write("\nTekst szyfrowany: \n");
+        writer.write(enctyption());
+        writer.close();
+    }
+
     public String getTextWitchPassword(){
         return this.textWitchPassword;
     }
@@ -120,6 +136,10 @@ public class VigenereCipher {
             }
         }
         return formatTextIntoSentance(encryptedText.toString());
+    }
+
+    public int getAlphabertSignNumber(char sign){
+         return (polishSigns.indexOf(sign));
     }
 
     public String decription(){

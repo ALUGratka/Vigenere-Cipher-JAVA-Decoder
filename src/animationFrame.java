@@ -1,3 +1,4 @@
+import javax.crypto.Cipher;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -6,7 +7,7 @@ import javax.swing.table.TableColumn;
 import java.awt.*;
 
 public class animationFrame extends JFrame {
-    private JTable alphabetTable;
+    private MyTable alphabetTable;
     private JButton okAndExitButton;
     private  JTextField cypheredText;
 
@@ -23,8 +24,9 @@ public class animationFrame extends JFrame {
             columnNames[i] = Character.toString(sign);
             sign++;
         }
-        alphabetTable = new JTable(cipher.getAlphabetTable(),columnNames);
+        alphabetTable = new MyTable(cipher.getAlphabetTable(),columnNames);
         alphabetTable.setTableHeader(null);
+        alphabetTable.setEnabled(false);
         okAndExitButton = new JButton("OK");
         okAndExitButton.setBounds(200,600,100,20);
 
@@ -41,43 +43,30 @@ public class animationFrame extends JFrame {
         add(cypheredText);
         add(okAndExitButton);
 
-        String polishSigns = "AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŻŹ";
-
-        char[][]alphabet = new char[32][32];
-
-        for(int i = 0;i<32;i++){
-            for(int j = 0;j<32;j++){
-                alphabet[i][j] = polishSigns.charAt(j);
-            }
-            char firsChar = polishSigns.charAt(0);
-            polishSigns = polishSigns.substring(1);
-            polishSigns=polishSigns+firsChar;
-        }
-
-        for(int i = 0;i<32;i++){
-            for(int j = 0;j<32;j++){
-                System.out.print(alphabet[i][j]);
-            }
-            System.out.println();
-        }
 
         setVisible(true);
     }
 
-    private void animation(String input, String inputWithPassword,VigenereCipher cypher){
+    private void animation(String input, String inputWithPassword,VigenereCipher cypher) throws InterruptedException {
         JTextField textBox = new JTextField();
 
-
-                if (input.charAt(0) == 'W') {
-                    TableColumn soprtColumn = alphabetTable.getColumnModel().getColumn(5);
-                    soprtColumn.setCellRenderer(new myTableCellRenderer(1,5,Color.BLUE));
+                for(int i = 0;i<input.length();i++){
+                    if(cypher.getSigns().contains(input.charAt(i))) {
+                        Thread.sleep(1000);
+                    }
+                    else{
+                        System.out.println(input.charAt(i));
+                        TableColumn soprtColumn = alphabetTable.getColumnModel().getColumn(cypher.getAlphabertSignNumber(input.charAt(i)));
+                        soprtColumn.setCellRenderer(new myTableCellRenderer(0, 5, Color.BLUE));
+                        Thread.sleep(4000);
+                    }
                 }
 
 
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         animationFrame animationFrame = new animationFrame(new VigenereCipher());
         VigenereCipher vigenereCipher = new VigenereCipher();
 

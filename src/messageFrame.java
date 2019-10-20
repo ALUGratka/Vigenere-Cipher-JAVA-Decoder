@@ -18,10 +18,6 @@ public class messageFrame extends JDialog implements ActionListener {
 
         setModalityType(ModalityType.APPLICATION_MODAL);
 
-        //panel = new MotionPanel(this);
-        //panel.setBounds(0,0,201,130);
-
-
         messageText = new JLabel(message,JLabel.CENTER);
         messageText.setFont(new Font(Font.DIALOG,Font.BOLD,10));
         messageText.setBounds(0,10,200,20);
