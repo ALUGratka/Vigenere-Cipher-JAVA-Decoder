@@ -19,7 +19,8 @@ Aby wprowadzić hasło do aplikacji trzeba je zatwierdzić wciskając przycisk O
 *	ewentualne ograniczenia\
 Zapisany plik będzie miał nazwę „wynik.txt”, wyniki są w nim nadpisywane. Ostatni wywołany znajduje się w pliku. Dane nie zostaną zapisane, jeżeli brakuje hasła lub tekstu wprowadzanego do szyfrowania lub deszyfrowania.
 *	środowisko programistyczne i wykonawcze\
-Program napisany jest w języku JAVA. Aby go uruchomić należy wybrać plik o rozszerzeniu .jar oraz posiadać zainstalowany JDK.
+Program napisany jest w języku JAVA. Aby go uruchomić należy wybrać plik o rozszerzeniu .jar oraz posiadać zainstalowany JDK.\
+PROGRAM WYKONYWALNY ZNAJDUJE SIĘ W FOLDERZE out
 ### 3. Interfejs graficzny – przyjazny dla użytkownika
 *	nazwa: SZYFROMACHINA
 *	autor: Alicja Gratkowska
