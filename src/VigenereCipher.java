@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class VigenereCipher {
             file.delete();
         }
         else{
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file.getName()));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file.getName(), Charset.forName("UTF-8")));
             writer.write("Wprowadzony tekst: \n");
             writer.write(inputText);
             writer.write("\nTekst szyfrowany: \n");
