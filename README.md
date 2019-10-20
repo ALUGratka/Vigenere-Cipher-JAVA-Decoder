@@ -25,8 +25,8 @@ Program napisany jest w języku JAVA. Aby go uruchomić należy wybrać plik o r
 *	autor: Alicja Gratkowska
 *	opis: prosta aplikacja graficzna napisana w języku Java przeznaczona do szyfrowania lub deszyfrowania tekstu zgodnie z szyfrem Vigenere.
 *	Aplikacja napisana jest w języku Java. Plik wykonywalny jest plikiem jar, do którego niezbędne jest zainstalowanie JDK.
-*	Algorytm:
-
+*	Algorytm:\
+https://pl.wikipedia.org/wiki/Szyfr_Vigen%C3%A8re%E2%80%99a
 *	Podpowiedzi:\
 Pamiętaj, żeby po wprowadzenie hasła zatwierdzić je klikając przycisk OK:
 ### 4. Implementacja
